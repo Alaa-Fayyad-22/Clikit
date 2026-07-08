@@ -110,10 +110,10 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: auto;
+    scroll-behavior: smooth ;
   }
   .wave-line {
-    animation: none;
+    animation: ease-out 0.5s forwards ;
     stroke-dashoffset: 0;
   }
   .waves-drift,

@@ -25,7 +25,7 @@ export default function Services() {
   return (
     <section id="services" className="relative overflow-hidden py-28">
       {/* Faint echo of the motif, drifting off the right edge */}
-      <div
+      {/* <div
         className="pointer-events-none absolute -right-96 -top-40 w-[70rem] rotate-12 opacity-40"
         style={{
           maskImage:
@@ -36,7 +36,7 @@ export default function Services() {
         aria-hidden="true"
       >
         <FlowLines animated={false} lines={11} className="h-auto w-full" />
-      </div>
+      </div> */}
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-2xl text-center">

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import FlowLines from "@/components/FlowLines";
 
 const body = Inter({
   subsets: ["latin"],
@@ -41,6 +42,19 @@ export default function RootLayout({
     >
       <body className="bg-night font-sans text-white antialiased">
         {/* Decorative film grain over the whole page */}
+         <div
+    className="waves-drift pointer-events-none fixed inset-0 z-0"
+    aria-hidden="true"
+    style={{
+      maskImage:
+        "radial-gradient(110% 85% at 50% 32%, black 45%, transparent 98%)",
+      WebkitMaskImage:
+        "radial-gradient(110% 85% at 50% 32%, black 45%, transparent 98%)",
+    }}
+  >
+    <FlowLines className="h-full w-full" />
+  </div>
+
         <div
           className="grain pointer-events-none fixed inset-0 z-[70] opacity-[0.05] mix-blend-overlay"
           aria-hidden="true"

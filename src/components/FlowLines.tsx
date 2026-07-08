@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 type FlowLinesProps = {
   className?: string;
   /** Number of contour lines in the bundle */
@@ -7,37 +11,74 @@ type FlowLinesProps = {
 };
 
 /**
- * CLiKiT's signature motif — the bundle of flowing contour lines from the
- * logo. The bundle fans out at the edges and pinches in the middle, like a
- * current. Pure deterministic math (no randomness), so the server and the
- * client always render identical markup.
+ * CLiKiT's signature motif — flowing contour lines.
+ * The lines stay fixed but subtly react to page scrolling.
  */
 export default function FlowLines({
   className = "",
   lines = 16,
   animated = true,
 }: FlowLinesProps) {
-  const paths = Array.from({ length: lines }, (_, i) => {
-    const t = lines === 1 ? 0.5 : i / (lines - 1); // 0 → 1 across the bundle
-    const spread = t - 0.5; // -0.5 → 0.5
+  const [scroll, setScroll] = useState(0);
 
-    const yStart = 420 + spread * 480; // fanned open on the left
-    const yMid = 400 + spread * 130 + 40 * Math.sin(3 * t); // pinched waist
-    const yEnd = 430 + spread * 520 - 50 * Math.cos(2 * t); // fanned on the right
-    const amp = 60 + 120 * Math.sin(Math.PI * t); // wave height
+  useEffect(() => {
+    let frame = 0;
+
+    const handleScroll = () => {
+      cancelAnimationFrame(frame);
+
+      frame = requestAnimationFrame(() => {
+        setScroll(window.scrollY);
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const paths = Array.from({ length: lines }, (_, i) => {
+    const t = lines === 1 ? 0.5 : i / (lines - 1);
+    const spread = t - 0.5;
+
+    // Scroll-driven organic movement
+    const scrollWave = Math.sin(scroll * 0.008 + t * 8) * 12;
+    const scrollCurl = Math.cos(scroll * 0.006 + t * 5) * 10;
+
+    const yStart = 420 + spread * 480;
+
+    const yMid =
+      400 +
+      spread * 130 +
+      40 * Math.sin(3 * t) +
+      scrollWave;
+
+    const yEnd =
+      430 +
+      spread * 520 -
+      50 * Math.cos(2 * t) +
+      scrollCurl;
+
+    const amp =
+      60 +
+      120 * Math.sin(Math.PI * t) +
+      scrollWave;
 
     const d = [
       `M -80 ${yStart.toFixed(1)}`,
-      `C 250 ${(yStart - amp * 0.7).toFixed(1)},`,
+      `C 250 ${(yStart - amp * 0.7 + scrollCurl).toFixed(1)},`,
       `470 ${(yMid + amp * 0.8).toFixed(1)},`,
       `730 ${yMid.toFixed(1)}`,
-      `S 1150 ${(yEnd - amp).toFixed(1)},`,
+      `S 1150 ${(yEnd - amp + scrollWave).toFixed(1)},`,
       `1540 ${yEnd.toFixed(1)}`,
     ].join(" ");
 
     return {
       d,
-      opacity: 0.05 + 0.11 * Math.sin(Math.PI * t), // brightest mid-bundle
+      opacity: 0.05 + 0.11 * Math.sin(Math.PI * t),
       delay: i * 90,
     };
   });
@@ -60,7 +101,11 @@ export default function FlowLines({
           strokeOpacity={p.opacity}
           strokeWidth="1.2"
           className={animated ? "wave-line" : undefined}
-          style={animated ? { animationDelay: `${p.delay}ms` } : undefined}
+          style={
+            animated
+              ? { animationDelay: `${p.delay}ms` }
+              : undefined
+          }
         />
       ))}
     </svg>
