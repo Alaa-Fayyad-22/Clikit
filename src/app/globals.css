@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   CLiKiT design tokens
+   Registered in Tailwind's theme so they become real utilities:
+   bg-night, bg-panel, border-line, text-fog, text-primary, bg-cta, etc.
+--------------------------------------------------------------------------- */
+@theme {
+  /* Palette */
+  --color-primary: #2ed3d3; /* Primary teal          */
+  --color-primary-soft: #6ee7e7; /* Primary hover         */
+  --color-cta: #8bff5c; /* Neon green CTA        */
+  --color-leaf: #6ccf4f; /* Secondary green       */
+  --color-night: #050707; /* Main background       */
+  --color-panel: #0f1416; /* Section background    */
+  --color-line: #2a2f32; /* Borders               */
+  --color-fog: #c7d1d1; /* Secondary text        */
+
+  /* Type — variables are provided by next/font in layout.tsx */
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-face), ui-sans-serif, system-ui,
+    sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, "SFMono-Regular", Menlo,
+    monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-night);
+  color: #ffffff;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-primary) 35%, transparent);
+  color: #ffffff;
+}
+
+:where(a, button, [role="button"]):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* ---------------------------------------------------------------------------
+   Signature motif — the flowing contour lines from the logo.
+   Each line "draws" itself on load, then the whole bundle drifts slowly.
+--------------------------------------------------------------------------- */
+.wave-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: wave-draw 2.8s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+}
+
+@keyframes wave-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.waves-drift {
+  animation: waves-drift 16s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes waves-drift {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(-18px, 14px, 0) rotate(-1.2deg);
+  }
+}
+
+/* Soft teal / green auras echoing the logo's glow */
+.glow-orb {
+  animation: orb-pulse 9s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes orb-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.08);
+  }
+}
+
+/* Typewriter caret */
+.caret {
+  animation: caret-blink 1.1s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Film-grain texture laid over the whole page (very faint) */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .wave-line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .waves-drift,
+  .glow-orb,
+  .caret {
+    animation: none;
+  }
+}
