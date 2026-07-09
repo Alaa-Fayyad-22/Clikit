@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -36,18 +36,29 @@ export default function Navbar() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-night/70 backdrop-blur-md">
-      <nav
-        className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6"
+     <nav className="flex h-16 w-full items-center justify-between px-8 lg:px-12"
         aria-label="Main"
       >
         <Link
           href="/"
-          className="font-display text-xl font-bold tracking-tight"
+          className="font-display text-xxl font-bold"
           onClick={() => setOpen(false)}
         >
-          CL<span className="text-primary">i</span>K
+          {/* CL<span className="text-primary">i</span>K
           <span className="text-primary">i</span>T
-          <span className="text-cta">.</span>
+          <span className="text-cta">.</span> */}
+
+<div className="flex items-center">
+  <Image
+    src="/logo_2.png"
+    alt="CLiKiT logo"
+    width={320}
+    height={80}
+    className="h-8 w-full h-full  sm:h-10 md:h-12"
+    priority
+  />
+</div>
+
         </Link>
 
         {/* Desktop navigation */}
