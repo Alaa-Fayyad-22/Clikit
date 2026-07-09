@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const NAV_LINKS = [
@@ -13,6 +14,12 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const pathname = usePathname();
+
+  // A section is "active" on its own page and any page nested under it
+  // (e.g. "/work" stays highlighted while viewing "/work/some-case-study").
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
 
   // Close on Escape and return focus to the toggle; lock body scroll while open.
   useEffect(() => {
@@ -63,16 +70,24 @@ export default function Navbar() {
 
         {/* Desktop navigation */}
         <ul className="hidden items-center gap-9 md:flex">
-          {NAV_LINKS.map(({ label, href }) => (
-            <li key={label}>
-              <Link
-                href={href}
-                className="text-sm text-fog transition-colors hover:text-white"
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
+          {NAV_LINKS.map(({ label, href }) => {
+            const active = isActive(href);
+            return (
+              <li key={label}>
+                <Link
+                  href={href}
+                  aria-current={active ? "page" : undefined}
+                  className={`text-sm transition-colors ${
+                    active
+                      ? "font-semibold text-primary"
+                      : "text-fog hover:text-white"
+                  }`}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         <Link
@@ -127,17 +142,25 @@ export default function Navbar() {
           className="border-t border-white/5 bg-night/95 backdrop-blur-md md:hidden"
         >
           <ul className="mx-auto flex max-w-6xl flex-col gap-1 px-6 py-4">
-            {NAV_LINKS.map(({ label, href }) => (
-              <li key={label}>
-                <Link
-                  href={href}
-                  onClick={() => setOpen(false)}
-                  className="block rounded-lg px-3 py-3 text-base text-fog transition-colors hover:bg-white/[0.04] hover:text-white"
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
+            {NAV_LINKS.map(({ label, href }) => {
+              const active = isActive(href);
+              return (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    onClick={() => setOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    className={`block rounded-lg px-3 py-3 text-base transition-colors ${
+                      active
+                        ? "bg-primary/10 font-semibold text-primary"
+                        : "text-fog hover:bg-white/[0.04] hover:text-white"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              );
+            })}
             <li className="mt-2">
               <Link
                 href="/contact"

@@ -63,12 +63,6 @@ export default function RootLayout({
       className={`${body.variable} ${display.variable} ${mono.variable}`}
     >
       <body className="bg-night font-sans text-white antialiased">
-        <a
-          href="#main-content"
-          className="sr-only rounded-lg bg-primary px-4 py-2 font-semibold text-night focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100]"
-        >
-          Skip to content
-        </a>
         {/* Decorative film grain over the whole page */}
          <div
     className="waves-drift pointer-events-none fixed inset-0 z-0"
