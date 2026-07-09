@@ -1,7 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
 type FlowLinesProps = {
   className?: string;
   /** Number of contour lines in the bundle */
@@ -12,42 +8,17 @@ type FlowLinesProps = {
 
 /**
  * CLiKiT's signature motif — flowing contour lines.
- * The lines stay fixed but subtly react to page scrolling.
+ * The lines draw themselves in once, then drift slowly via CSS.
  */
 export default function FlowLines({
   className = "",
   lines = 16,
   animated = true,
 }: FlowLinesProps) {
-  const [scroll, setScroll] = useState(0);
-
-  useEffect(() => {
-    // Respect reduced-motion: skip the scroll-reactive movement entirely and
-    // leave the lines in their static rest position.
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      return;
-    }
-
-    let frame = 0;
-
-    const handleScroll = () => {
-      cancelAnimationFrame(frame);
-
-      frame = requestAnimationFrame(() => {
-        setScroll(window.scrollY);
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  // Rest geometry. The motif's motion comes entirely from CSS (the one-time
+  // `.wave-line` draw-in and the ambient `.waves-drift`); it deliberately does
+  // not react to scroll, so this stays a static server-rendered SVG.
+  const scroll = 0;
 
   const paths = Array.from({ length: lines }, (_, i) => {
     const t = lines === 1 ? 0.5 : i / (lines - 1);

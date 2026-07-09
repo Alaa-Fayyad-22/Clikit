@@ -25,41 +25,54 @@ export default function WorkPage() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {CASE_STUDIES.map((study) => (
             <Link
-              key={study.slug}
-              href={`/work/${study.slug}`}
-              className="group flex flex-col rounded-2xl border border-line bg-panel p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_18px_50px_-25px_rgba(46,211,211,0.35)]"
-            >
-              <span className="w-fit rounded-md border border-primary/25 bg-primary/10 px-2.5 py-1 font-mono text-xs text-primary">
-                {study.industry}
-              </span>
+  key={study.slug}
+  href={`/work/${study.slug}`}
+  className="group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-panel p-8 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_18px_50px_-25px_rgba(46,211,211,0.35)]"
+>
+  {/* Hover overlay */}
+  <div
+    className="absolute inset-0 bg-[rgba(46,211,211,0.05)] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+    aria-hidden="true"
+  />
 
-              <h2 className="mt-6 font-display text-2xl font-bold tracking-tight">
-                {study.client}
-              </h2>
+  {/* Content */}
+  <div className="relative z-10 flex h-full flex-col">
+    <span className="w-fit rounded-md border border-primary/25 bg-primary/10 px-2.5 py-1 font-mono text-xs text-primary">
+      {study.industry}
+    </span>
 
-              <p className="mt-3 leading-relaxed text-fog">{study.summary}</p>
+    <h2 className="mt-6 font-display text-2xl font-bold tracking-tight">
+      {study.client}
+    </h2>
 
-              <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-                {study.results.slice(0, 2).map((result) => (
-                  <p key={result.label} className="font-mono text-sm">
-                    <span className="font-semibold text-white">
-                      {result.value}
-                    </span>{" "}
-                    <span className="text-fog/70">{result.label}</span>
-                  </p>
-                ))}
-              </div>
+    <p className="mt-3 leading-relaxed text-fog">
+      {study.summary}
+    </p>
 
-              <span className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-primary">
-                Read the case study
-                <span
-                  aria-hidden="true"
-                  className="transition-transform group-hover:translate-x-1"
-                >
-                  →
-                </span>
-              </span>
-            </Link>
+    <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+      {study.results.slice(0, 2).map((result) => (
+        <p key={result.label} className="font-mono text-sm">
+          <span className="font-semibold text-white">
+            {result.value}
+          </span>{" "}
+          <span className="text-fog/70">
+            {result.label}
+          </span>
+        </p>
+      ))}
+    </div>
+
+    <span className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-primary">
+      Read the case study
+      <span
+        aria-hidden="true"
+        className="transition-transform duration-300 group-hover:translate-x-1"
+      >
+        →
+      </span>
+    </span>
+  </div>
+</Link>
           ))}
         </div>
       </section>
