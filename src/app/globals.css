@@ -121,3 +121,42 @@ body {
     animation: none;
   }
 }
+
+
+
+/* ---------------------------------------------------------------------------
+   Themed scrollbar — matches the CLiKiT palette instead of the browser
+   default. `scrollbar-gutter: stable` reserves the scrollbar's space up
+   front so content doesn't shift when a scrollbar appears/disappears.
+--------------------------------------------------------------------------- */
+html {
+  scrollbar-gutter: stable;
+  /* Firefox: thumb color, then track color */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-night);
+}
+ 
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+ 
+::-webkit-scrollbar-track {
+  background: var(--color-night);
+}
+ 
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 999px;
+  border: 2px solid var(--color-night);
+  background-clip: padding-box;
+}
+ 
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary);
+}
+ 
+::-webkit-scrollbar-corner {
+  background: var(--color-night);
+}
