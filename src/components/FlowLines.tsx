@@ -22,6 +22,15 @@ export default function FlowLines({
   const [scroll, setScroll] = useState(0);
 
   useEffect(() => {
+    // Respect reduced-motion: skip the scroll-reactive movement entirely and
+    // leave the lines in their static rest position.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
     let frame = 0;
 
     const handleScroll = () => {
@@ -78,7 +87,8 @@ export default function FlowLines({
 
     return {
       d,
-      opacity: 0.05 + 0.11 * Math.sin(Math.PI * t),
+      // Softened ~30% to give text-heavy pages (About, articles) more breathing room.
+      opacity: (0.05 + 0.11 * Math.sin(Math.PI * t)) * 0.7,
       delay: i * 90,
     };
   });

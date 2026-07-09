@@ -1,43 +1,9 @@
-import FlowLines from "./FlowLines";
-
-const SERVICES = [
-  {
-    num: "01",
-    title: "Performance marketing",
-    desc: "Paid search and social campaigns, optimized weekly against revenue — not impressions.",
-    featured: false,
-  },
-  {
-    num: "02",
-    title: "SEO & content",
-    desc: "Rank for what your buyers actually search, with content they actually read.",
-    featured: false,
-  },
-  {
-    num: "03",
-    title: "Brand & web design",
-    desc: "Minimal, fast websites built to convert visitors into customers.",
-    featured: true,
-  },
-] as const;
+import Link from "next/link";
+import { SERVICES } from "@/lib/services";
 
 export default function Services() {
   return (
     <section id="services" className="relative overflow-hidden py-28">
-      {/* Faint echo of the motif, drifting off the right edge */}
-      {/* <div
-        className="pointer-events-none absolute -right-96 -top-40 w-[70rem] rotate-12 opacity-40"
-        style={{
-          maskImage:
-            "radial-gradient(60% 60% at 50% 50%, black 40%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(60% 60% at 50% 50%, black 40%, transparent 100%)",
-        }}
-        aria-hidden="true"
-      >
-        <FlowLines animated={false} lines={11} className="h-auto w-full" />
-      </div> */}
-
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">
@@ -73,10 +39,12 @@ export default function Services() {
                 {service.title}
               </h3>
 
-              <p className="mt-3 leading-relaxed text-fog">{service.desc}</p>
+              <p className="mt-3 leading-relaxed text-fog">
+                {service.summary}
+              </p>
 
-              <a
-                href="#contact"
+              <Link
+                href={`/services#${service.slug}`}
                 className={`mt-auto inline-flex items-center gap-2 pt-10 text-sm font-semibold ${
                   service.featured ? "text-cta" : "text-primary"
                 }`}
@@ -88,7 +56,7 @@ export default function Services() {
                 >
                   →
                 </span>
-              </a>
+              </Link>
             </article>
           ))}
         </div>
